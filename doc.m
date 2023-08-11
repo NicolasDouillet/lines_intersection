@@ -3,7 +3,7 @@
 % Function to compute the intersection
 % point between two lines of the 3D or 2D spaces.
 %
-% Author & support : nicolas.douillet (at) free.fr, 2020.
+% Author & support : nicolas.douillet (at) free.fr, 2020-2023.
 %
 %% Syntax
 %
@@ -81,10 +81,10 @@ u2 = [0 1 -1];
 
 %% Example #2
 % 2D single point intersection
-M1 = [0 -1];
-u1 = [2 1];
-M2 = [0 4];
-u2 = [1 -2];
+M1 = [0 -1 0];
+u1 = [2 1 0];
+M2 = [0 4 0];
+u2 = [1 -2 0];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [2 0 0], rc = 1
 
 %% Example #3

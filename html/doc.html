@@ -6,7 +6,7 @@
    <!--
 This HTML was auto-generated from MATLAB code.
 To make changes, update the MATLAB code and republish this document.
-      --><title>lines_intersection</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2020-01-20"><meta name="DC.source" content="doc.m"><style type="text/css">
+      --><title>lines_intersection</title><meta name="generator" content="MATLAB 9.7"><link rel="schema.DC" href="http://purl.org/dc/elements/1.1/"><meta name="DC.date" content="2023-08-11"><meta name="DC.source" content="doc.m"><style type="text/css">
 html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,b,u,i,center,dl,dt,dd,ol,ul,li,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;outline:0;font-size:100%;vertical-align:baseline;background:transparent}body{line-height:1}ol,ul{list-style:none}blockquote,q{quotes:none}blockquote:before,blockquote:after,q:before,q:after{content:'';content:none}:focus{outine:0}ins{text-decoration:none}del{text-decoration:line-through}table{border-collapse:collapse;border-spacing:0}
 
 html { min-height:100%; margin-bottom:1px; }
@@ -66,72 +66,48 @@ table td { padding:7px 5px; text-align:left; vertical-align:top; border:1px soli
 
 
 
-  </style></head><body><div class="content"><h1>lines_intersection</h1><!--introduction--><p>Function to compute the intersection point between two lines of the 3D or 2D spaces.</p><p>Author &amp; support : nicolas.douillet (at) free.fr, 2020.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Principle</a></li><li><a href="#4">See also</a></li><li><a href="#5">Input arguments</a></li><li><a href="#6">Output arguments</a></li><li><a href="#7">Example #1</a></li><li><a href="#8">Example #2</a></li><li><a href="#9">Example #3</a></li><li><a href="#10">Example #4</a></li></ul></div><h2 id="1">Syntax</h2><p>[I, rc] = lines_intersection(M1, u1, M2, u2);</p><p>[I, rc] = lines_intersection(M1, u1, M2, u2, verbose);</p><h2 id="2">Description</h2><p>[I, rc] = lines_intersection(M1, u1, M2, u2) computes the intersection point of lines L1(M1,u1) and L2(M2,u2) and stores it in I. One unique intersction gives return code rc = 1, no intersection gives rc = 0, an infinity of intersections (case L1 = L2) gives rc = 2.</p><p>[I, rc] = lines_intersection(M1, u1, M2, u2, verbose) set verbose mode ON when verbose is logical/1, and donesn't (verbose mode OFF) when verbose = *false/*0.</p><h2 id="3">Principle</h2><p>Given L1 and L2 lines parametric equation systems :</p><div><ul><li>x(t) = x1 + a1*t</li><li>y(t) = y1 + b1*t</li><li>z(t) = z1 + c1*t</li></ul></div><div><ul><li>x'(t) = x2 + a2*u</li><li>y'(t) = y2 + b2*u</li><li>z'(t) = z2 + c2*u</li></ul></div><p>we solve the system</p><div><ul><li>x = x'</li><li>y = y'</li><li>z = z'</li></ul></div><p>Using Kramer technique, with t and u as the unknowns.</p><h2 id="4">See also</h2><p><a href="https://fr.mathworks.com/matlabcentral/fileexchange/73760-line-plane-intersection-3d?s_tid=prof_contriblnk">line_plane_intersection</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73853-planes-intersection?s_tid=prof_contriblnk">planes_intersection</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73478-point-to-line-distance-3d-2d?s_tid=prof_contriblnk">point_to_line_distance</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73490-point-to-plane-distance?s_tid=prof_contriblnk">point_to_plane_distance</a> |</p><h2 id="5">Input arguments</h2><p>- M1 : a point belonging to L1. Row or column vector. 2 &lt;= numel(M1) &lt;= 3.</p><p>- u1 : one L1 director -row or column- vector. 2 &lt;= numel(u1) &lt;= 3.</p><p>- M2 : a point belonging to L2. Row or column vector. 2 &lt;= numel(M2) &lt;= 3.</p><p>- u2 : one L1 director -row or column- vector. 2 &lt;= numel(u2) &lt;= 3.</p><p>- verbose : either logical *false/ true or numeric *0/1.</p><h2 id="6">Output arguments</h2><p>- I : double vector, The intersection point of lines L1 and L2. size(I) = size(u1).</p><p>- rc : numeric, integer scalar in the set {0,1,2}. Return code.</p><div><ul><li>0 : void intersection</li><li>1 : one unique intersection point</li><li>2 : infinity of intersection points</li></ul></div><h2 id="7">Example #1</h2><p>3D single point intersection</p><pre class="codeinput">M1 = [6 6 6];
+  </style></head><body><div class="content"><h1>lines_intersection</h1><!--introduction--><p>Function to compute the intersection point between two lines of the 3D or 2D spaces.</p><p>Author &amp; support : nicolas.douillet (at) free.fr, 2020-2023.</p><!--/introduction--><h2>Contents</h2><div><ul><li><a href="#1">Syntax</a></li><li><a href="#2">Description</a></li><li><a href="#3">Principle</a></li><li><a href="#4">See also</a></li><li><a href="#5">Input arguments</a></li><li><a href="#6">Output arguments</a></li><li><a href="#7">Example #1</a></li><li><a href="#8">Example #2</a></li><li><a href="#9">Example #3</a></li><li><a href="#10">Example #4</a></li></ul></div><h2 id="1">Syntax</h2><p>[I, rc] = lines_intersection(M1, u1, M2, u2);</p><p>[I, rc] = lines_intersection(M1, u1, M2, u2, verbose);</p><h2 id="2">Description</h2><p>[I, rc] = lines_intersection(M1, u1, M2, u2) computes the intersection point of lines L1(M1,u1) and L2(M2,u2) and stores it in I. One unique intersction gives return code rc = 1, no intersection gives rc = 0, an infinity of intersections (case L1 = L2) gives rc = 2.</p><p>[I, rc] = lines_intersection(M1, u1, M2, u2, verbose) set verbose mode ON when verbose is logical/1, and donesn't (verbose mode OFF) when verbose = *false/*0.</p><h2 id="3">Principle</h2><p>Given L1 and L2 lines parametric equation systems :</p><div><ul><li>x(t) = x1 + a1*t</li><li>y(t) = y1 + b1*t</li><li>z(t) = z1 + c1*t</li></ul></div><div><ul><li>x'(t) = x2 + a2*u</li><li>y'(t) = y2 + b2*u</li><li>z'(t) = z2 + c2*u</li></ul></div><p>we solve the system</p><div><ul><li>x = x'</li><li>y = y'</li><li>z = z'</li></ul></div><p>Using Kramer technique, with t and u as the unknowns.</p><h2 id="4">See also</h2><p><a href="https://fr.mathworks.com/matlabcentral/fileexchange/73760-line-plane-intersection-3d?s_tid=prof_contriblnk">line_plane_intersection</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73853-planes-intersection?s_tid=prof_contriblnk">planes_intersection</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73478-point-to-line-distance-3d-2d?s_tid=prof_contriblnk">point_to_line_distance</a> | <a href="https://fr.mathworks.com/matlabcentral/fileexchange/73490-point-to-plane-distance?s_tid=prof_contriblnk">point_to_plane_distance</a> |</p><h2 id="5">Input arguments</h2><p>- M1 : real row or column vector double, a point belonging to L1. 2 &lt;= numel(M1) &lt;= 3.</p><p>- u1 : real row or column vector double, one L1 director. 2 &lt;= numel(u1) &lt;= 3.</p><p>- M2 : real row or column vector double, a point belonging to L2. 2 &lt;= numel(M2) &lt;= 3.</p><p>- u2 : real row or column vector double, one L1 director. 2 &lt;= numel(u2) &lt;= 3.</p><p>- verbose : either logical *false/ true or numeric *0/1.</p><h2 id="6">Output arguments</h2><p>- I : real vector double, The intersection point of lines L1 and L2. size(I) = size(u1).</p><p>- rc : integer scalar double in the set {0,1,2}. Return code.</p><div><ul><li>0 : void intersection</li><li>1 : one unique intersection point</li><li>2 : infinity of intersection points</li></ul></div><h2 id="7">Example #1</h2><p>3D single point intersection</p><pre class="codeinput">M1 = [6 6 6];
 u1 = [1 1 1];
 M2 = [1 0 2];
 u2 = [0 1 -1];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) <span class="comment">% expected : I = [1 1 1], rc = 1</span>
 </pre><pre class="codeoutput">Lines 1 and 2 intersect in one single unique point.
-
 I =
-
     1.0000    1.0000    1.0000
-
-
 rc =
-
      1
-
-</pre><h2 id="8">Example #2</h2><p>2D single point intersection</p><pre class="codeinput">M1 = [0 -1];
-u1 = [2 1];
-M2 = [0 4];
-u2 = [1 -2];
+</pre><h2 id="8">Example #2</h2><p>2D single point intersection</p><pre class="codeinput">M1 = [0 -1 0];
+u1 = [2 1 0];
+M2 = [0 4 0];
+u2 = [1 -2 0];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) <span class="comment">% expected : I = [2 0 0], rc = 1</span>
 </pre><pre class="codeoutput">Lines 1 and 2 intersect in one single unique point.
-
 I =
-
     2.0000    0.0000         0
-
-
 rc =
-
      1
-
 </pre><h2 id="9">Example #3</h2><p>3D void intersection</p><pre class="codeinput">M1 = [7 11 13];
 u1 = [2 3 5];
 M2 = [17 19 23];
 u2 = [7 11 13];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) <span class="comment">% expected : I = [], rc = 0</span>
 </pre><pre class="codeoutput">Lines 1 and 2 have no intersection.
-
 I =
-
      []
-
-
 rc =
-
      0
-
 </pre><h2 id="10">Example #4</h2><p>3D, L1 = L2, column vectors</p><pre class="codeinput">M1 = [-2 2 -2]';
 u1 = [1 -1 1]';
 M2 = [3 -3 3]';
 u2 = [-1 1 -1]';
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) <span class="comment">% expected : rc = 2</span>
 </pre><pre class="codeoutput">L1 = L2 : lines 1 and 2 are actually a same one. 
-
 I =
-
     -2
      2
     -2
-
-
 rc =
-
      2
-
 </pre><p class="footer"><br><a href="https://www.mathworks.com/products/matlab/">Published with MATLAB&reg; R2019b</a><br></p></div><!--
 ##### SOURCE BEGIN #####
 %% lines_intersection
@@ -139,7 +115,7 @@ rc =
 % Function to compute the intersection
 % point between two lines of the 3D or 2D spaces.
 %
-% Author & support : nicolas.douillet (at) free.fr, 2020.
+% Author & support : nicolas.douillet (at) free.fr, 2020-2023.
 %
 %% Syntax
 %
@@ -187,21 +163,21 @@ rc =
 %
 %% Input arguments
 %
-% - M1 : a point belonging to L1. Row or column vector. 2 <= numel(M1) <= 3.
+% - M1 : real row or column vector double, a point belonging to L1. 2 <= numel(M1) <= 3.
 %
-% - u1 : one L1 director -row or column- vector. 2 <= numel(u1) <= 3.
+% - u1 : real row or column vector double, one L1 director. 2 <= numel(u1) <= 3.
 %
-% - M2 : a point belonging to L2. Row or column vector. 2 <= numel(M2) <= 3.
+% - M2 : real row or column vector double, a point belonging to L2. 2 <= numel(M2) <= 3.
 %
-% - u2 : one L1 director -row or column- vector. 2 <= numel(u2) <= 3.
+% - u2 : real row or column vector double, one L1 director. 2 <= numel(u2) <= 3.
 %
 % - verbose : either logical *false/ true or numeric *0/1.
 %
 %% Output arguments
 %
-% - I : double vector, The intersection point of lines L1 and L2. size(I) = size(u1).
+% - I : real vector double, The intersection point of lines L1 and L2. size(I) = size(u1).
 %
-% - rc : numeric, integer scalar in the set {0,1,2}. Return code.
+% - rc : integer scalar double in the set {0,1,2}. Return code.
 %
 % * 0 : void intersection 
 % * 1 : one unique intersection point
@@ -217,10 +193,10 @@ u2 = [0 1 -1];
 
 %% Example #2
 % 2D single point intersection
-M1 = [0 -1];
-u1 = [2 1];
-M2 = [0 4];
-u2 = [1 -2];
+M1 = [0 -1 0];
+u1 = [2 1 0];
+M2 = [0 4 0];
+u2 = [1 -2 0];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [2 0 0], rc = 1
 
 %% Example #3

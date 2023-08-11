@@ -2,7 +2,7 @@ function [I, rc] = lines_intersection(M1, u1, M2, u2, verbose)
 %% lines_intersection : function to compute the intersection
 % point between two lines of the 3D or 2D spaces.
 %
-% Author & support : nicolas.douillet (at) free.fr, 2020.
+% Author & support : nicolas.douillet (at) free.fr, 2020-2023.
 %
 %
 % Syntax
@@ -46,13 +46,13 @@ function [I, rc] = lines_intersection(M1, u1, M2, u2, verbose)
 %
 % Input arguments
 %
-% - M1 : real row or column vector double, a point belonging to L1. 2 <= numel(M1) <= 3.
+% - M1 : real row or column vector double, a point belonging to L1. numel(M1) = 3.
 %
-% - u1 : real row or column vector double, one L1 director. 2 <= numel(u1) <= 3.
+% - u1 : real row or column vector double, one L1 director. numel(u1) = 3.
 %
-% - M2 : real row or column vector double, a point belonging to L2. 2 <= numel(M2) <= 3.
+% - M2 : real row or column vector double, a point belonging to L2. numel(M2) = 3.
 %
-% - u2 : real row or column vector double, one L1 director. 2 <= numel(u2) <= 3.
+% - u2 : real row or column vector double, one L1 director. numel(u2) = 3.
 %
 % - verbose : either logical *false/ true or numeric *0/1.
 %
@@ -79,10 +79,10 @@ function [I, rc] = lines_intersection(M1, u1, M2, u2, verbose)
 %
 % Example #2 : 2D single point intersection
 %
-% M1 = [0 -1];
-% u1 = [2 1];
-% M2 = [0 4];
-% u2 = [1 -2];
+% M1 = [0 -1 0];
+% u1 = [2 1 0];
+% M2 = [0 4 0];
+% u2 = [1 -2 0];
 % [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [2 0 0], rc = 1
 %
 %
@@ -117,23 +117,12 @@ assert(isequal(numel(u1),numel(u2),numel(M1),numel(M2)),'All inputs vectors and 
 assert(isequal(ndims(u1),ndims(u2),ndims(M1),ndims(M2),2),'All inputs vectors and points must have the same number of dimensions (2).');
 assert(isreal(u1) && isreal(u2) && isreal(M1) && isreal(M2),'All inputs vectors and points must contain real numbers only.');
 
-dimension = numel(u1);
-assert(dimension > 1 && dimension < 4,'Input vectors and points must have 2 or 3 elements.');
+
+assert(numel(u1) > 1 && numel(u1) < 4,'Input vectors and points must have 2 or 3 elements.');
 
 
 %% Body
-% Zeros padding in 2D case
-s1 = size(u1);
-catdim = find(s1 == 1);
-cat2dim = setdiff(1:2,catdim);
-
-if dimension < 3
-    M1 = cat(cat2dim,M1,0);
-    u1 = cat(cat2dim,u1,0);
-    M2 = cat(cat2dim,M2,0);
-    u2 = cat(cat2dim,u2,0);
-end
-
+precision = 1e3*eps;
 
 u1 = u1/norm(u1);
 u2 = u2/norm(u2);
@@ -143,9 +132,9 @@ nM1M2 = diff_pts/norm(diff_pts);
 
 
 % Segment cases
-if norm(v) < eps
+if norm(v) < precision
     
-    if ~norm(cross(u1,nM1M2)) && ~norm(cross(u2,nM1M2))
+    if norm(cross(u1,nM1M2)) < precision && norm(cross(u2,nM1M2)) < precision
         
         I = M1;
         rc = 2;
@@ -169,17 +158,17 @@ else
     
     d = [-v(1) v(2) -v(3)];
     
-    f = find(d > eps);
-    if f; f = f(1,1); end;
+    f = find(abs(d) > precision);
+    if f; f = f(1,1); end
     
-    d_pts = diff_pts(setdiff(1:dimension,f));
-    dt = det(cat(catdim,d_pts,-u2(setdiff(1:dimension,f))));
-    du = det(cat(catdim,u1(setdiff(1:dimension,f)),d_pts));
+    d_pts = diff_pts(setdiff(1:3,f));
+    dt = det(cat(1,d_pts,-u2(setdiff(1:3,f))));
+    du = det(cat(1,u1(setdiff(1:3,f)),d_pts));
     
     t = dt/d(f);
-    u = du/d(f);             
+    u = du/d(f);                            
     
-    if abs(M1(f)+u1(f)*t-M2(f)-u2(f)*u) < 1e4*eps(min(abs(M1(f)+u1(f)*t),abs(M2(f)+u2(f)*u))) % fth equation check ok
+    if abs(M1(f)+u1(f)*t-M2(f)-u2(f)*u) < 1e3*eps(min(abs(M1(f)+u1(f)*t),abs(M2(f)+u2(f)*u)))
         
         I = zeros(size(M1));
         

@@ -71,34 +71,37 @@
 % * 1 : one unique intersection point
 % * 2 : infinity of intersection points
 %
-%% Example #1
-% 3D single point intersection
-M1 = [6 6 6];
-u1 = [1 1 1];
-M2 = [1 0 2];
-u2 = [0 1 -1];
+%% Example #1 : 3D single point intersection
+M1 = [2 3 -1];
+u1 = [3 5 7]; 
+M2 = [7 5 11];
+u2 = [-2 3 -5];
+[I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [5 8 6], rc = 1
+
+%% Example #2 : 3D single point intersection, column vectors
+M1 = [6 6 6]';
+u1 = [1 1 1]';
+M2 = [1 0 2]';
+u2 = [0 1 -1]';
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [1 1 1], rc = 1
 
-%% Example #2
-% 2D single point intersection
+%% Example #3 : 2D single point intersection
 M1 = [0 -1 0];
 u1 = [2 1 0];
 M2 = [0 4 0];
 u2 = [1 -2 0];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [2 0 0], rc = 1
 
-%% Example #3
-% 3D void intersection
-M1 = [7 11 13];
-u1 = [2 3 5]; 
-M2 = [17 19 23];
-u2 = [7 11 13];
+%% Example #4 : 3D void intersection
+M1 = [2 3 5];
+u1 = [7 11 13]; 
+M2 = [3 5 2];
+u2 = [11 13 7];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : I = [], rc = 0
 
-%% Example #4
-% 3D, L1 = L2, column vectors
-M1 = [-2 2 -2]';
-u1 = [1 -1 1]'; 
-M2 = [3 -3 3]';
-u2 = [-1 1 -1]';
+%% Example #5 : 3D, L1 = L2, column vectors
+M1 = [-2 2 -2];
+u1 = [1 -1 1]; 
+M2 = [3 -3 3];
+u2 = [-1 1 -1];
 [I, rc] = lines_intersection(M1, u1, M2, u2, true) % expected : rc = 2
